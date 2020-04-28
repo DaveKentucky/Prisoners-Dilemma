@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Fitness.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Game.py">
       <SubType>Code</SubType>
     </Compile>

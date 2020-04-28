@@ -1,15 +1,27 @@
 import numpy
 import Calculations
 
+# Play a tournament among all population
+def playTournament(population, rounds):
+    popSize = len(population)
+    scores = numpy.zeros((popSize, popSize), int)
+    for i1 in range(popSize):
+        for i2 in range(popSize):
+            if i2 > i1:
+                newScore = runGame(population[i1], population[i2], rounds)
+                scores[i1, i2] = newScore[0]
+                scores[i2, i1] = newScore[1]
+    return scores
+
 # Run a game between 2 individuals
-def runGame(ind1, ind2, length):
+def runGame(ind1, ind2, rounds):
     # arrays for history of performed moves
     previousMoves1 = numpy.empty(0, int)
     previousMoves2 = numpy.empty(0, int)
 
     score1 = 0
     score2 = 0
-    for i in range(length):
+    for i in range(rounds):
         # perform both individuals moves
         newMove1 = performMove(ind1, previousMoves1)
         newMove2 = performMove(ind2, previousMoves2)
@@ -24,8 +36,8 @@ def runGame(ind1, ind2, length):
             previousMoves1 = previousMoves1[2:]
             previousMoves2 = previousMoves2[2:]
 
-    print("Score:", score1, score2)
-    return
+    #print("Score:", score1, score2)
+    return score1, score2
 
 # get the next move based on 3 previous moves
 def performMove(individual, previousMoves):
