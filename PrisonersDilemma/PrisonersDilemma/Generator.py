@@ -23,7 +23,6 @@ class Generator:
 
     def generatePopulation(self, n):
         newPopulation = self.toolbox.population(n)
-        for i in newPopulation:
-            print(i)
+        for i in newPopulation: print(i)
     
         return newPopulation
