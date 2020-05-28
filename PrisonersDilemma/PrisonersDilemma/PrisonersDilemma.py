@@ -29,7 +29,7 @@ def nextGeneration():
 
     # crossover of the offspring
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
-        if random.random() < cxProb:
+        #if random.random() < cxProb:
             toolbox.mate(child1, child2)
 
     # mutation of the offspring
@@ -40,17 +40,33 @@ def nextGeneration():
     population[:] = offspring
     evaluatePopulation()
 
-    for ind in population: print(ind, "\n", ind.fitness)
-    print("\n")
+    # for ind in population: print(ind, "\n", ind.fitness)
+    # print("\n")
+
+    return
+
+# print given strategy decoded into 'C' for cooperate and 'D' for defect
+def decodeStrategy(individual):
+
+    strategy = numpy.array(individual[7:])
+    length = numpy.size(strategy)
+    if length == 64:
+        for i in range(length):
+            bin = numpy.binary_repr(i, 6)
+            bin = bin + ": " + numpy.binary_repr(strategy[i])
+            bin = bin.replace("0", "C")
+            bin = bin.replace("1", "D")
+            move = bin[:2] + " " + bin[2:4] + " " + bin[4:]
+            print(move)
 
     return
 
 indSize = 71   # size of single individual list
-tournamentLength = 10
-populationSize = 10
-generations = 2
+tournamentLength = 20
+populationSize = 20
+generations = 0
 cxProb = 0.8
-mutProb = 0.3
+mutProb = 0.1
 
 toolbox = base.Toolbox()
 
@@ -79,6 +95,7 @@ evaluatePopulation()
 # print("\n")
 
 for i in range(generations):
-   nextGeneration()
-   evaluatePopulation()
-    
+    nextGeneration()
+    evaluatePopulation()
+    best = tools.selBest(population, 1)
+    print("\nGeneration", i + 1, ". Best fitness:", best[0].fitness)
