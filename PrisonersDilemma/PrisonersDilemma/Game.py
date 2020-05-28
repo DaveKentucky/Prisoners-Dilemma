@@ -29,8 +29,9 @@ def runGame(ind1, ind2, rounds):
         previousMoves1 = numpy.append(previousMoves1, [newMove1, newMove2])
         previousMoves2 = numpy.append(previousMoves2, [newMove2, newMove1])
         # count score of the performed moves
-        score1 += countScore(newMove1, newMove2)
-        score2 += countScore(newMove2, newMove1)
+        score = countScore(newMove1, newMove2)
+        score1 += score[0]
+        score2 += score[1]
         # remove the oldest moves performed from history
         if i >= 3:
             previousMoves1 = previousMoves1[2:]
@@ -59,12 +60,12 @@ def performMove(individual, previousMoves):
 def countScore(myMove, enemyMove):
     if myMove == 0:
         if enemyMove == 0:
-            return 3
+            return (3, 3)
         if enemyMove == 1:
-            return 0
+            return (0, 5)
     if myMove == 1:
         if enemyMove == 0:
-            return 5
+            return (5, 0)
         if enemyMove == 1:
-            return 1
+            return (1, 1)
     return

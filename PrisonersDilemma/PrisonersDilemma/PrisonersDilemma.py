@@ -1,7 +1,27 @@
 import random
 import numpy
 from deap import creator, base, tools, algorithms
-import Game, Calculations, Fitness
+import Game, Calculations, Fitness, Strategies
+from tkinter import *
+
+def main():
+    
+    bgColor = "LightSkyBlue2"
+    fontColor = "grey18"
+
+    window = Tk()
+    window.configure(background = bgColor)
+    window.title("Prisonner's Dilemma")
+
+    Label(window, text = "Prisonner's Dilemma Genetic Algorithm", bg = bgColor, fg = fontColor, font = "none, 24").grid(row = 0, column = 0)
+    Label(window, text = "Generations:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 1, column = 0)
+    Label(window, text = "Population size:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 2, column = 0)
+    Label(window, text = "Crossover Probability:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 3, column = 0)
+    Label(window, text = "Mutation Probability:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 4, column = 0)
+
+    window.mainloop()
+
+    return
 
 def evaluatePopulation():
     
@@ -62,7 +82,7 @@ def decodeStrategy(individual):
     return
 
 indSize = 71   # size of single individual list
-tournamentLength = 20
+tournamentLength = 100
 populationSize = 20
 generations = 0
 cxProb = 0.8
@@ -94,8 +114,17 @@ evaluatePopulation()
 # ind in population: print(ind, "\n", ind.fitness)
 # print("\n")
 
+main()
+
+for ind in population:
+    #score = Strategies.TitForTat(ind, tournamentLength)
+    #print(score)
+
 for i in range(generations):
     nextGeneration()
     evaluatePopulation()
     best = tools.selBest(population, 1)
     print("\nGeneration", i + 1, ". Best fitness:", best[0].fitness)
+    #if i > generations - 5:
+        #decodeStrategy(best[0])
+
