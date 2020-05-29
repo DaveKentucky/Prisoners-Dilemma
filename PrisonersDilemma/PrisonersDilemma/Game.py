@@ -26,8 +26,8 @@ def runGame(ind1, ind2, rounds):
         newMove1 = performMove(ind1, previousMoves1)
         newMove2 = performMove(ind2, previousMoves2)
         # add performed moves to history
-        previousMoves1 = numpy.append(previousMoves1, [newMove1, newMove2])
-        previousMoves2 = numpy.append(previousMoves2, [newMove2, newMove1])
+        numpy.append(previousMoves1, [newMove1, newMove2])
+        numpy.append(previousMoves2, [newMove2, newMove1])
         # count score of the performed moves
         score = countScore(newMove1, newMove2)
         score1 += score[0]

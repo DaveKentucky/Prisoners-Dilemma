@@ -93,7 +93,7 @@ toolbox = base.Toolbox()
 # create fitness maximizing the objective
 creator.create("StrategyFitness", base.Fitness, weights = (1.0,))
 # create individual containing of a list with created fitness
-creator.create("Individual", numpy.ndarray, fitness = creator.StrategyFitness)
+creator.create("Individual", numpy.ndarray, fitness = creator.StrategyFitness, scores = numpy.zeros(0, int))
 
 # register function generating random value for initialized individual
 toolbox.register("boolAttribute", random.randint, 0, 1)
@@ -117,8 +117,8 @@ evaluatePopulation()
 main()
 
 for ind in population:
-    #score = Strategies.TitForTat(ind, tournamentLength)
-    #print(score)
+    Strategies.TitForTat(ind, tournamentLength)
+    print(ind.scores)
 
 for i in range(generations):
     nextGeneration()
