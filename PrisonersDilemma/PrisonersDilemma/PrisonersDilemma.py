@@ -118,6 +118,9 @@ main()
 
 for ind in population:
     Strategies.TitForTat(ind, tournamentLength)
+    Strategies.AlwaysCooperate(ind, tournamentLength)
+    Strategies.AlwaysDefect(ind, tournamentLength)
+    Strategies.Grudger(ind, tournamentLength)
     print(ind.scores)
 
 for i in range(generations):
