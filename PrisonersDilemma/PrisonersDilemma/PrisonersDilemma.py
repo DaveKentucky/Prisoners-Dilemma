@@ -13,18 +13,114 @@ def main():
     window.configure(background = bgColor)
     window.title("Prisonner's Dilemma")
 
-    Label(window, text = "Prisonner's Dilemma Genetic Algorithm", bg = bgColor, fg = fontColor, font = "none, 24").grid(row = 0, column = 0)
-    Label(window, text = "Generations:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 1, column = 0)
-    Label(window, text = "Population size:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 2, column = 0)
-    Label(window, text = "Crossover Probability:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 3, column = 0)
-    Label(window, text = "Mutation Probability:", bg = bgColor, fg = fontColor, font = "none, 18").grid(row = 4, column = 0)
+    Label(window, text = "Prisonner's Dilemma Genetic Algorithm", font = "none, 24", bg = bgColor, fg = fontColor).grid(row = 0, column = 0, columnspan = 2, padx = 2, pady = 8)
+    Label(window, text = "Population size:", font = "none, 18", bg = bgColor, fg = fontColor).grid(row = 1, column = 0, padx = 70, pady = 2, sticky = W)
+    Label(window, text = "Generations:", font = "none, 18", bg = bgColor, fg = fontColor).grid(row = 2, column = 0, padx = 70, pady = 2, sticky = W)
+    Label(window, text = "Crossover Probability:", font = "none, 18", bg = bgColor, fg = fontColor).grid(row = 3, column = 0, padx = 70, pady = 2, sticky = W)
+    Label(window, text = "Mutation Probability:", font = "none, 18", bg = bgColor, fg = fontColor).grid(row = 4, column = 0, padx = 70, pady = 2, sticky = W)
+    Label(window, text = "Tournament rounds:", font = "none, 18", bg = bgColor, fg = fontColor).grid(row = 5, column = 0, padx = 70, pady = 2, sticky = W)
+    
+    varPop = DoubleVar(value = 20)  # initial value of population
+    varGen = DoubleVar(value = 100)  # initial value of generations
+    varCX = DoubleVar(value = 0.75)  # initial value of crossover probability
+    varMut = DoubleVar(value = 0.15)  # initial value of mutation probability
+    varRounds = DoubleVar(value = 100) # initial value of rounds per tournament
+
+    spinboxPop = Spinbox(window, from_ = 2, to = 50, width = 4, fg = fontColor, font = "none, 16", textvariable = varPop)
+    spinboxPop.grid(row = 1, column = 1)
+    spinboxGen = Spinbox(window, from_ = 0, to = 500, width = 4, fg = fontColor, font = "none, 16", textvariable = varGen)
+    spinboxGen.grid(row = 2, column = 1)
+    spinboxCX = Spinbox(window, from_ = 0.00, to = 1.00, increment = 0.05, width = 4, fg = fontColor, font = "none, 16", textvariable = varCX)
+    spinboxCX.grid(row = 3, column = 1)
+    spinboxMut = Spinbox(window, from_ = 0.00, to = 1.00, increment = 0.05, width = 4, fg = fontColor, font = "none, 16", textvariable = varMut)
+    spinboxMut.grid(row = 4, column = 1)
+    spinboxRounds = Spinbox(window, from_ = 0, to = 300, width = 4, fg = fontColor, font = "none, 16", textvariable = varRounds)
+    spinboxRounds.grid(row = 5, column = 1)
+
+    Label(window, text = "Predefined strategies:", font = "none, 18", bg = bgColor, fg = fontColor).grid(row = 6, column = 0, columnspan = 2, pady = 10)
+    Label(window, text = "Always Cooperate", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 7, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Always Defect", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 8, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Gradual", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 9, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Grudger", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 10, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Pavlov", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 11, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Soft-Majo", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 12, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Tit For Tat", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 13, column = 0, padx = 70, sticky = W)
+    Label(window, text = "Tit For 2 Tats", font = "none, 14", bg = bgColor, fg = fontColor).grid(row = 14, column = 0, padx = 70, sticky = W)
+
+    alwaysCooperate = IntVar(value = 1)
+    Checkbutton(window, variable = alwaysCooperate, bg = bgColor).grid(row = 7, column = 1, padx = 70, sticky = E)
+    alwaysDefect = IntVar(value = 1)
+    Checkbutton(window, variable = alwaysDefect, bg = bgColor).grid(row = 8, column = 1, padx = 70, sticky = E)
+    gradual = IntVar(value = 1)
+    Checkbutton(window, variable = gradual, bg = bgColor).grid(row = 9, column = 1, padx = 70, sticky = E)
+    grudger = IntVar(value = 1)
+    Checkbutton(window, variable = grudger, bg = bgColor).grid(row = 10, column = 1, padx = 70, sticky = E)
+    pavlov = IntVar(value = 1)
+    Checkbutton(window, variable = pavlov, bg = bgColor).grid(row = 11, column = 1, padx = 70, sticky = E)
+    softMajo = IntVar(value = 1)
+    Checkbutton(window, variable = softMajo, bg = bgColor).grid(row = 12, column = 1, padx = 70, sticky = E)
+    titForTat = IntVar(value = 1)
+    Checkbutton(window, variable = titForTat, bg = bgColor).grid(row = 13, column = 1, padx = 70, sticky = E)
+    titFor2Tats = IntVar(value = 1)
+    Checkbutton(window, variable = titFor2Tats, bg = bgColor).grid(row = 14, column = 1, padx = 70, sticky = E)
+
+
+    def LaunchGA():
+
+        popSize = int(spinboxPop.get())
+        generations = int(spinboxGen.get())
+        cxProb = float(spinboxCX.get())
+        mutProb = float(spinboxMut.get())
+        rounds = int(spinboxRounds.get())
+        strategies = [alwaysCooperate.get(), alwaysDefect.get(), gradual.get(), grudger.get(), pavlov.get(), softMajo.get(), titForTat.get(), titFor2Tats.get()]
+        StartGeneration(popSize, generations, cxProb, mutProb, rounds, strategies)
+        
+        return
+
+    Button(window, text = "Start", font = "none, 10", bg = fontColor, activebackground = "gray48", fg = "white", width = 20, command = LaunchGA).grid(row = 15, column = 0, columnspan = 2, pady = 10)
 
     window.mainloop()
 
     return
 
-def nextGeneration():
-    offspring = toolbox.select(population, populationSize)
+def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies):
+    
+    indSize = 71   # size of single individual list
+
+    # create fitness maximizing the objective
+    creator.create("StrategyFitness", base.Fitness, weights = (1.0,))
+    # create individual containing of a list with created fitness
+    creator.create("Individual", numpy.ndarray, fitness = creator.StrategyFitness, scores = numpy.zeros(0, int))
+    
+    # register function generating random value for initialized individual
+    toolbox.register("boolAttribute", random.randint, 0, 1)
+    # register function creating new individual
+    toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.boolAttribute, n = indSize)
+    # register function creating new population
+    toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+    # register function evaluating fitness
+    toolbox.register("evaluate", Fitness.evaluate, size = popSize, rounds = tournamentRounds, strChosen = strategies)
+    # register function selecting individual from population
+    toolbox.register("select", tools.selTournament, tournsize = 2)
+    # register function mating two individuals with one point crossover
+    toolbox.register("mate", tools.cxOnePoint)
+    # register function mutating individual with 5% probability of shuffling indexes
+    toolbox.register("mutate", tools.mutShuffleIndexes, indpb = 0.05)
+    
+    population = toolbox.population(popSize)
+    toolbox.evaluate(population)
+    best = tools.selBest(population, 1)
+    print("\nGeneration 0 . Best fitness:", best[0].fitness, "\n")
+        
+    for i in range(gen):
+        population = nextGeneration(population, popSize)
+        best = tools.selBest(population, 1)
+        print("\nGeneration", i + 1, ". Best fitness:", best[0].fitness, "\n")
+
+    return
+
+def nextGeneration(pop, popSize):
+    offspring = toolbox.select(pop, popSize)
     offspring = list(map(toolbox.clone, offspring))
     random.shuffle(offspring)
 
@@ -40,10 +136,10 @@ def nextGeneration():
         if random.random() < mutProb:
             toolbox.mutate(mutant)
 
-    population[:] = offspring
-    toolbox.evaluate(population)
+    pop[:] = offspring
+    toolbox.evaluate(pop)
 
-    return
+    return pop
 
 # print given strategy decoded into 'C' for cooperate and 'D' for defect
 def decodeStrategy(individual):
@@ -61,42 +157,11 @@ def decodeStrategy(individual):
 
     return
 
-indSize = 71   # size of single individual list
 tournamentLength = 100
-populationSize = 20
-generations = 10
+populationSize = 30
+generations = 20
 cxProb = 0.8
 mutProb = 0.1
 
 toolbox = base.Toolbox()
-
-# create fitness maximizing the objective
-creator.create("StrategyFitness", base.Fitness, weights = (1.0,))
-# create individual containing of a list with created fitness
-creator.create("Individual", numpy.ndarray, fitness = creator.StrategyFitness, scores = numpy.zeros(0, int))
-
-# register function generating random value for initialized individual
-toolbox.register("boolAttribute", random.randint, 0, 1)
-# register function creating new individual
-toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.boolAttribute, n = indSize)
-# register function creating new population
-toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-# register function evaluating fitness
-toolbox.register("evaluate", Fitness.evaluate, size = populationSize, rounds = tournamentLength)
-# register function selecting individual from population
-toolbox.register("select", tools.selTournament, tournsize = 2)
-# register function mating two individuals with one point crossover
-toolbox.register("mate", tools.cxOnePoint)
-# register function mutating individual with 5% probability of shuffling indexes
-toolbox.register("mutate", tools.mutShuffleIndexes, indpb = 0.05)
-
-population = toolbox.population(populationSize)
-toolbox.evaluate(population)
-
-
-#main()
-
-for i in range(generations):
-    nextGeneration()
-    best = tools.selBest(population, 1)
-    print("\nGeneration", i + 1, ". Best fitness:", best[0].fitness)
+main()

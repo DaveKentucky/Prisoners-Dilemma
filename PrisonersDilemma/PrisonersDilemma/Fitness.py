@@ -2,14 +2,14 @@ import numpy
 import Strategies
 
 # evaluate all individuals in given population          
-def evaluate(pop, size, rounds):
+def evaluate(pop, size, rounds, strChosen):
     
     min = float(0) # lowest score of population
     max = float(0) # highest score of population
     scores = numpy.empty(0, float)
 
     for ind in pop:
-        Strategies.TestStrategy(ind, rounds)
+        Strategies.TestStrategy(ind, rounds, strChosen)
         indScore = numpy.average(ind.scores)
         scores = numpy.append(scores, indScore)
 
@@ -24,7 +24,7 @@ def evaluate(pop, size, rounds):
 
     for i in range(size):
         evaluateScaled(pop[i], scores[i], coefficients)
-        print(i + 1, pop[i].fitness)
+        print(i + 1, "score:", round(scores[i], 2), "fitness:", pop[i].fitness)
 
     return
 
