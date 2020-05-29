@@ -24,7 +24,7 @@ def evaluate(pop, size, rounds):
 
     for i in range(size):
         evaluateScaled(pop[i], scores[i], coefficients)
-        print(pop[i].fitness)
+        print(i + 1, pop[i].fitness)
 
     return
 

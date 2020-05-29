@@ -1,7 +1,7 @@
 import random
 import numpy
 from deap import creator, base, tools, algorithms
-import Game, Fitness, Strategies
+import Game, Fitness
 from tkinter import *
 
 def main():
@@ -23,34 +23,17 @@ def main():
 
     return
 
-def evaluatePopulation():
-    
-    for ind in population:
-        if ind.fitness:
-            del ind.fitness
-
-    tournamentScores = Game.playTournament(population, tournamentLength)
-    #print(tournamentScores)
-
-    maxPoints = 5 * (len(population) - 1) * tournamentLength
-    Fitness.evaluatePopulation(population, tournamentScores, maxPoints)
-
-    #for ind in population: print(ind.fitness)
-    
-    return
-
 def nextGeneration():
     offspring = toolbox.select(population, populationSize)
     offspring = list(map(toolbox.clone, offspring))
     random.shuffle(offspring)
 
-    # for ind in offspring: print(ind, "\n", ind.fitness)
-    # print("\n")
-
     # crossover of the offspring
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
-        #if random.random() < cxProb:
+        if random.random() < cxProb:
             toolbox.mate(child1, child2)
+            del child1.fitness
+            del child2.fitness
 
     # mutation of the offspring
     for mutant in offspring:
@@ -58,10 +41,7 @@ def nextGeneration():
             toolbox.mutate(mutant)
 
     population[:] = offspring
-    evaluatePopulation()
-
-    # for ind in population: print(ind, "\n", ind.fitness)
-    # print("\n")
+    toolbox.evaluate(population)
 
     return
 
@@ -84,7 +64,7 @@ def decodeStrategy(individual):
 indSize = 71   # size of single individual list
 tournamentLength = 100
 populationSize = 20
-generations = 0
+generations = 10
 cxProb = 0.8
 mutProb = 0.1
 
@@ -113,16 +93,10 @@ toolbox.register("mutate", tools.mutShuffleIndexes, indpb = 0.05)
 population = toolbox.population(populationSize)
 toolbox.evaluate(population)
 
-# ind in population: print(ind, "\n", ind.fitness)
-# print("\n")
 
-main()
+#main()
 
 for i in range(generations):
     nextGeneration()
-    evaluatePopulation()
     best = tools.selBest(population, 1)
     print("\nGeneration", i + 1, ". Best fitness:", best[0].fitness)
-    #if i > generations - 5:
-        #decodeStrategy(best[0])
-
