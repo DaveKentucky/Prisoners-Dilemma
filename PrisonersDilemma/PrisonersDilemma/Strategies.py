@@ -163,3 +163,43 @@ def Gradual(individual, rounds):
     individual.scores = numpy.append(individual.scores, indScore)
    
     return
+
+# plays single game against the Soft-Majo strategy
+def SoftMajo(individual, rounds):
+    
+    myScore = 0
+    indScore = 0
+    myMove = 0
+    indMove = 0
+    defectsCount = 0
+    cooperaionsCount = 0
+    previousMoves = numpy.empty(0, int)
+
+    for i in range(rounds):
+        # find next move of individual
+        indMove = Game.performMove(individual, previousMoves)
+        # get this round scores
+        score = Game.countScore(myMove, indMove)
+        # add performed moves to history
+        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        myScore += score[0]
+        indScore += score[1]
+        
+        # update counters of individual's specific moves
+        if indMove == 0:
+            cooperaionsCount += 1
+        else:
+            defectsCount += 1
+        # set myMove based on moves performed by individual
+        if cooperaionsCount >= defectsCount:
+            myMove = 0
+        else:
+            myMove = 1
+
+        # remove the oldest moves performed from history
+        if i >= 3:
+            previousMoves = previousMoves[2:]
+
+    individual.scores = numpy.append(individual.scores, indScore)
+   
+    return

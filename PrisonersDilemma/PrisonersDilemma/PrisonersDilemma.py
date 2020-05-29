@@ -122,6 +122,7 @@ for ind in population:
     Strategies.AlwaysDefect(ind, tournamentLength)
     Strategies.Grudger(ind, tournamentLength)
     Strategies.Gradual(ind, tournamentLength)
+    Strategies.SoftMajo(ind, tournamentLength)
     print(ind.scores)
 
 for i in range(generations):
