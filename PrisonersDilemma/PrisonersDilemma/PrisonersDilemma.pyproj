@@ -27,9 +27,6 @@
     <Compile Include="Game.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Calculations.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PrisonersDilemma.py" />
     <Compile Include="Strategies.py">
       <SubType>Code</SubType>

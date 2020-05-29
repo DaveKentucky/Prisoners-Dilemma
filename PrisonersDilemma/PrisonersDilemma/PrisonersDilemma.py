@@ -1,7 +1,7 @@
 import random
 import numpy
 from deap import creator, base, tools, algorithms
-import Game, Calculations, Fitness, Strategies
+import Game, Fitness, Strategies
 from tkinter import *
 
 def main():
@@ -101,6 +101,8 @@ toolbox.register("boolAttribute", random.randint, 0, 1)
 toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.boolAttribute, n = indSize)
 # register function creating new population
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+# register function evaluating fitness
+toolbox.register("evaluate", Fitness.evaluate, size = populationSize, rounds = tournamentLength)
 # register function selecting individual from population
 toolbox.register("select", tools.selTournament, tournsize = 2)
 # register function mating two individuals with one point crossover
@@ -109,23 +111,12 @@ toolbox.register("mate", tools.cxOnePoint)
 toolbox.register("mutate", tools.mutShuffleIndexes, indpb = 0.05)
 
 population = toolbox.population(populationSize)
-evaluatePopulation()
+toolbox.evaluate(population)
 
 # ind in population: print(ind, "\n", ind.fitness)
 # print("\n")
 
 main()
-
-for ind in population:
-    Strategies.TitForTat(ind, tournamentLength)
-    Strategies.TitFor2Tats(ind, tournamentLength)
-    Strategies.AlwaysCooperate(ind, tournamentLength)
-    Strategies.AlwaysDefect(ind, tournamentLength)
-    Strategies.Grudger(ind, tournamentLength)
-    Strategies.Gradual(ind, tournamentLength)
-    Strategies.SoftMajo(ind, tournamentLength)
-    Strategies.Pavlov(ind, tournamentLength)
-    print(ind.scores)
 
 for i in range(generations):
     nextGeneration()

@@ -1,7 +1,23 @@
 import numpy
 import Game
 
-# plays single game against the TitForTat strategy
+# plays a game between given strategy and all predefined strategies
+def TestStrategy(ind, rounds):
+    
+    TitForTat(ind, rounds)
+    TitFor2Tats(ind, rounds)
+    AlwaysCooperate(ind, rounds)
+    AlwaysDefect(ind, rounds)
+    Grudger(ind, rounds)
+    Gradual(ind, rounds)
+    SoftMajo(ind, rounds)
+    Pavlov(ind, rounds)
+    
+    # print(ind.scores)
+
+    return
+
+# plays a single game against the TitForTat strategy
 def TitForTat(individual, rounds):
     
     myScore = 0
@@ -31,7 +47,7 @@ def TitForTat(individual, rounds):
    
     return
 
-# plays single game against the TitFor2Tats strategy
+# plays a single game against the TitFor2Tats strategy
 def TitFor2Tats(individual, rounds):
     
     myScore = 0
@@ -70,8 +86,7 @@ def TitFor2Tats(individual, rounds):
    
     return
 
-
-# plays single game against the AlwaysCooperate strategy
+# plays a single game against the AlwaysCooperate strategy
 def AlwaysCooperate(individual, rounds):
     
     myScore = 0
@@ -98,7 +113,7 @@ def AlwaysCooperate(individual, rounds):
 
     return
 
-# plays single game against the AlwaysDefect strategy
+# plays a single game against the AlwaysDefect strategy
 def AlwaysDefect(individual, rounds):
     
     myScore = 0
@@ -125,7 +140,7 @@ def AlwaysDefect(individual, rounds):
 
     return
 
-# plays single game against the Grudger strategy
+# plays a single game against the Grudger strategy
 def Grudger(individual, rounds):
     
     myScore = 0
@@ -157,7 +172,7 @@ def Grudger(individual, rounds):
 
     return
 
-# plays single game against the Gradual strategy
+# plays a single game against the Gradual strategy
 def Gradual(individual, rounds):
     
     myScore = 0
@@ -204,7 +219,7 @@ def Gradual(individual, rounds):
    
     return
 
-# plays single game against the Soft-Majo strategy
+# plays a single game against the Soft-Majo strategy
 def SoftMajo(individual, rounds):
     
     myScore = 0
@@ -244,7 +259,7 @@ def SoftMajo(individual, rounds):
    
     return
 
-# plays single game against the Pavlov strategy
+# plays a single game against the Pavlov strategy
 def Pavlov(individual, rounds):
     
     myScore = 0

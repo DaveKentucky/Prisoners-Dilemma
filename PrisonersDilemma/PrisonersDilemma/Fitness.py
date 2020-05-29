@@ -1,58 +1,46 @@
 import numpy
+import Strategies
 
-
-# evaluate fitness of each individual in population
-def evaluatePopulation(population, scores, maxPoints):
-    popSize = len(population)
-    sum = numpy.zeros(popSize, int)    # temporary array for score sums
+# evaluate all individuals in given population          
+def evaluate(pop, size, rounds):
     
-    fitnessRaw = numpy.zeros(popSize, float)
-    fitnessMax = float(0)
-    fitnessMin = float(0)
-    fitnessAvg = float(0)
-    maxReproduction = 2
+    min = float(0) # lowest score of population
+    max = float(0) # highest score of population
+    scores = numpy.empty(0, float)
 
-    # sum the scores of each individual
-    for i in range(popSize):
-        for j in range(popSize):
-            sum[i] += scores[i, j]
+    for ind in pop:
+        Strategies.TestStrategy(ind, rounds)
+        indScore = numpy.average(ind.scores)
+        scores = numpy.append(scores, indScore)
 
-    # evaluate raw fitness of each individual
-    for i in range(popSize):
-        fitnessRaw[i] = evaluateRaw(sum[i], maxPoints) # count raw fitness
+        # update lowest and highest scores
+        if indScore < min:
+            min = indScore
+        if indScore > max:
+            max = indScore
 
-        if fitnessRaw[i] > fitnessMax:
-            fitnessMax = fitnessRaw[i] # update highest raw fitness
-        if fitnessRaw[i] < fitnessMin:
-            fitnessMin = fitnessRaw[i]  # update lowest raw fitness
+    avg = numpy.average(scores)
+    coefficients = countCoefficients(min, max, avg, 2)
 
-    fitnessAvg = numpy.average(fitnessRaw)  # count avarage raw fitness
-    coefficients = countCoefficients(fitnessMax, fitnessMin, fitnessAvg, maxReproduction)   # count scaling function coefficients
-   
-    for i in range(popSize):
-        evaluateScaled(population[i], fitnessRaw[i], coefficients)  # count scaled fitness
+    for i in range(size):
+        evaluateScaled(pop[i], scores[i], coefficients)
+        print(pop[i].fitness)
 
     return
-            
-# evaluate raw fitness of the individual based on tournament score
-def evaluateRaw(score, max):
 
-    fitness = (score / max)
-    return fitness
-
-# evaluate scaled fitness of the individual with Goldberg's linear scaling
+# scale fitness of the individual with Goldberg's linear scaling
 def evaluateScaled(individual, fRaw, coef):
 
     fitness = coef[0] * fRaw + coef[1]
     if fitness > float(0):
-        individual.fitness = fitness
+        individual.fitness = round(fitness, 2)
     else:
         individual.fitness = float(0)
 
     return
 
 # count a and b coefficients for Goldberg's linear scaling
-def countCoefficients(fMax, fMin, fAvg, c):
+def countCoefficients(fMin, fMax, fAvg, c):
 
     check = float(c * (fAvg - fMax) / (c - 1))
     if fMin > check:    # regular coefficients
