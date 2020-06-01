@@ -117,7 +117,7 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
         best = tools.selBest(population, 1)
         print("\nGeneration", str(i + 1) + ". Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
 
-    decodeStrategy(best[0])
+    #decodeStrategy(best[0])
 
     return
 

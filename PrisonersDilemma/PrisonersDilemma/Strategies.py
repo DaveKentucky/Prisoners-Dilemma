@@ -40,7 +40,7 @@ def TitForTat(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [inMove, myMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
 
