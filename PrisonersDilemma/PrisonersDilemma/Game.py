@@ -6,10 +6,10 @@ def performMove(individual, previousMoves):
     if len(previousMoves) == 0:
         return individual[0]   # first encoded move
     if len(previousMoves) == 2:
-        previousMovesValue = binToDec(previousMoves[1:2:2])
+        previousMovesValue = binToDec(previousMoves[1::2])
         return individual[previousMovesValue + 1]   # move based on first move
     if len(previousMoves) == 4:
-        previousMovesValue = binToDec(previousMoves[1:4:2])
+        previousMovesValue = binToDec(previousMoves[1::2])
         return individual[previousMovesValue + 3]    # move based on 2 first moves
     if len(previousMoves) == 6:
         previousMovesValue = binToDec(previousMoves)

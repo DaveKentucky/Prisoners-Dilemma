@@ -40,7 +40,7 @@ def TitForTat(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [inMove, myMove])
         myScore += score[0]
         indScore += score[1]
 
@@ -71,7 +71,7 @@ def TitFor2Tats(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
 
@@ -109,7 +109,7 @@ def AlwaysCooperate(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
 
@@ -136,7 +136,7 @@ def AlwaysDefect(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
 
@@ -163,7 +163,7 @@ def Grudger(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
 
@@ -198,7 +198,7 @@ def Gradual(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
         
@@ -244,7 +244,7 @@ def SoftMajo(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
         
@@ -282,7 +282,7 @@ def Pavlov(individual, rounds):
         # get this round scores
         score = Game.countScore(myMove, indMove)
         # add performed moves to history
-        previousMoves = numpy.append(previousMoves, [myMove, indMove])
+        previousMoves = numpy.append(previousMoves, [indMove, myMove])
         myScore += score[0]
         indScore += score[1]
         

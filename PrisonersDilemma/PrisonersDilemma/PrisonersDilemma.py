@@ -110,19 +110,18 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     population = toolbox.population(popSize)
     toolbox.evaluate(population)
     best = tools.selBest(population, 1)
-    print("\nGeneration 0. Best fitness:", best[0].fitness, "\n")
+    print("\nGeneration 0. Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
         
     for i in range(gen):
-        population = nextGeneration(population, popSize)
+        population = nextGeneration(population, popSize, cxProb, mutProb)
         best = tools.selBest(population, 1)
         print("\nGeneration", str(i + 1) + ". Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
-
 
     decodeStrategy(best[0])
 
     return
 
-def nextGeneration(pop, popSize):
+def nextGeneration(pop, popSize, cxProb, mutProb):
     offspring = toolbox.select(pop, popSize)
     offspring = list(map(toolbox.clone, offspring))
     random.shuffle(offspring)
@@ -148,7 +147,7 @@ def nextGeneration(pop, popSize):
 def decodeStrategy(individual):
 
     beg = individual[:7]
-    strBeg = "First: " + "\n Opponent C: " + str(beg[1]) + "\n Opponent D: " + str(beg[2]) + "\n Opponent CC: " + str(beg[3]) + "\n Opponent CD: " + str(beg[4]) + "\n Opponent DC: " + str(beg[5]) + "\n Opponent DD: " + str(beg[6])
+    strBeg = "First: " + str(beg[0]) + "\n Opponent C: " + str(beg[1]) + "\n Opponent D: " + str(beg[2]) + "\n Opponent CC: " + str(beg[3]) + "\n Opponent CD: " + str(beg[4]) + "\n Opponent DC: " + str(beg[5]) + "\n Opponent DD: " + str(beg[6])
     strBeg = strBeg.replace("0", "C")
     strBeg = strBeg.replace("1", "D")    
     print(strBeg)
@@ -166,9 +165,6 @@ def decodeStrategy(individual):
 
     return
 
-tournamentLength = 100
-populationSize = 30
-generations = 20
 cxProb = 0.8
 mutProb = 0.1
 
