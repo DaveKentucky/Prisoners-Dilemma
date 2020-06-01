@@ -90,7 +90,7 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     # create fitness maximizing the objective
     creator.create("StrategyFitness", base.Fitness, weights = (1.0,))
     # create individual containing of a list with created fitness
-    creator.create("Individual", numpy.ndarray, fitness = creator.StrategyFitness, scores = numpy.zeros(0, int))
+    creator.create("Individual", numpy.ndarray, fitness = creator.StrategyFitness, scores = numpy.empty(0, int))
     
     # register function generating random value for initialized individual
     toolbox.register("boolAttribute", random.randint, 0, 1)
@@ -110,12 +110,15 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     population = toolbox.population(popSize)
     toolbox.evaluate(population)
     best = tools.selBest(population, 1)
-    print("\nGeneration 0 . Best fitness:", best[0].fitness, "\n")
+    print("\nGeneration 0. Best fitness:", best[0].fitness, "\n")
         
     for i in range(gen):
         population = nextGeneration(population, popSize)
         best = tools.selBest(population, 1)
-        print("\nGeneration", i + 1, ". Best fitness:", best[0].fitness, "\n")
+        print("\nGeneration", str(i + 1) + ". Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
+
+
+    decodeStrategy(best[0])
 
     return
 
@@ -143,6 +146,12 @@ def nextGeneration(pop, popSize):
 
 # print given strategy decoded into 'C' for cooperate and 'D' for defect
 def decodeStrategy(individual):
+
+    beg = individual[:7]
+    strBeg = "First: " + "\n Opponent C: " + str(beg[1]) + "\n Opponent D: " + str(beg[2]) + "\n Opponent CC: " + str(beg[3]) + "\n Opponent CD: " + str(beg[4]) + "\n Opponent DC: " + str(beg[5]) + "\n Opponent DD: " + str(beg[6])
+    strBeg = strBeg.replace("0", "C")
+    strBeg = strBeg.replace("1", "D")    
+    print(strBeg)
 
     strategy = numpy.array(individual[7:])
     length = numpy.size(strategy)

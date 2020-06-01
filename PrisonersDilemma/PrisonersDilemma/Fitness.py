@@ -9,6 +9,7 @@ def evaluate(pop, size, rounds, strChosen):
     scores = numpy.empty(0, float)
 
     for ind in pop:
+        ind.scores = numpy.empty(0, int)
         Strategies.TestStrategy(ind, rounds, strChosen)
         indScore = numpy.average(ind.scores)
         scores = numpy.append(scores, indScore)
