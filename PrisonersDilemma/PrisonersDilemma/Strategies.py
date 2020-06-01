@@ -84,7 +84,7 @@ def TitFor2Tats(individual, rounds):
         if defectsCount == 2:
             myMove = 1
         else:
-            myMove = indMove
+            myMove = 0
 
         # remove the oldest moves performed from history
         if i >= 3:
