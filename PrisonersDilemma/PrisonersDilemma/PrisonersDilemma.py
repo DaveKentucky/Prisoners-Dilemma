@@ -23,7 +23,7 @@ def main():
     varPop = DoubleVar(value = 20)  # initial value of population
     varGen = DoubleVar(value = 100)  # initial value of generations
     varCX = DoubleVar(value = 0.75)  # initial value of crossover probability
-    varMut = DoubleVar(value = 0.15)  # initial value of mutation probability
+    varMut = DoubleVar(value = 0.30)  # initial value of mutation probability
     varRounds = DoubleVar(value = 100) # initial value of rounds per tournament
 
     spinboxPop = Spinbox(window, from_ = 2, to = 50, width = 4, fg = fontColor, font = "none, 16", textvariable = varPop)
@@ -85,7 +85,7 @@ def main():
 
 def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies):
     
-    indSize = 71   # size of single individual list
+    indSize = 71   # size of single individual array
 
     # create fitness maximizing the objective
     creator.create("StrategyFitness", base.Fitness, weights = (1.0,))
@@ -100,10 +100,14 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     # register function evaluating fitness
     toolbox.register("evaluate", Fitness.evaluate, size = popSize, rounds = tournamentRounds, strChosen = strategies)
-    # register function selecting individual from population
-    toolbox.register("select", tools.selTournament, tournsize = 2)
+    # register function selecting individual from population with Tournament Selection
+    toolbox.register("selectTournament", tools.selTournament, tournsize = 2)
+    # register function selecting individual from population with Roulette Selection
+    toolbox.register("selectRoulette", RouletteSelection)
     # register function mating two individuals with one point crossover
-    toolbox.register("mate", tools.cxOnePoint)
+    toolbox.register("mateOnePoint", tools.cxOnePoint)
+    # register function mating two individuals with one point crossover
+    toolbox.register("mateTwoPoints", tools.cxTwoPoint)
     # register function mutating individual with 5% probability of shuffling indexes
     toolbox.register("mutate", tools.mutShuffleIndexes, indpb = 0.05)
     
@@ -112,6 +116,8 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     best = tools.selBest(population, 1)
     print("\nGeneration 0. Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
         
+    RouletteSelection(population, 10)
+
     for i in range(gen):
         population = nextGeneration(population, popSize, cxProb, mutProb)
         best = tools.selBest(population, 1)
@@ -122,14 +128,14 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     return
 
 def nextGeneration(pop, popSize, cxProb, mutProb):
-    offspring = toolbox.select(pop, popSize)
+    offspring = toolbox.selectRoulette(pop, popSize)
     offspring = list(map(toolbox.clone, offspring))
     random.shuffle(offspring)
 
     # crossover of the offspring
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
         if random.random() < cxProb:
-            toolbox.mate(child1, child2)
+            toolbox.mateOnePoint(child1, child2)
             del child1.fitness
             del child2.fitness
 
@@ -164,6 +170,30 @@ def decodeStrategy(individual):
             print(move)
 
     return
+
+# select k individuals from population with Roulette Selection
+def RouletteSelection(population, k):
+    offspring = list()
+    popProb = numpy.zeros(len(population))
+    sumFitness = 0
+    sumProb = 0
+
+    for ind in population:
+        sumFitness += ind.fitness
+
+    for i in range(len(population)):
+        tmp = population[i].fitness / sumFitness
+        popProb[i] = sumProb + tmp   
+        sumProb += tmp
+    
+    for i in range(k):
+        rand = random.random()
+        for j in range(len(population)):
+            if rand <= popProb[j]:
+                offspring.append(population[j])
+                break
+
+    return offspring
 
 cxProb = 0.8
 mutProb = 0.1
