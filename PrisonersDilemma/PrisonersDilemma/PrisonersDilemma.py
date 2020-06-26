@@ -104,6 +104,8 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     toolbox.register("selectTournament", tools.selTournament, tournsize = 2)
     # register function selecting individual from population with Roulette Selection
     toolbox.register("selectRoulette", RouletteSelection)
+    # register function selecting individual from population with Rank Selection
+    toolbox.register("selectRank", RankSelection)
     # register function mating two individuals with one point crossover
     toolbox.register("mateOnePoint", tools.cxOnePoint)
     # register function mating two individuals with one point crossover
@@ -116,7 +118,7 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     best = tools.selBest(population, 1)
     print("\nGeneration 0. Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
         
-    RouletteSelection(population, 10)
+    RankSelection(population, 10)
 
     for i in range(gen):
         population = nextGeneration(population, popSize, cxProb, mutProb)
@@ -128,7 +130,7 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     return
 
 def nextGeneration(pop, popSize, cxProb, mutProb):
-    offspring = toolbox.selectRoulette(pop, popSize)
+    offspring = toolbox.selectRank(pop, popSize)
     offspring = list(map(toolbox.clone, offspring))
     random.shuffle(offspring)
 
@@ -173,21 +175,60 @@ def decodeStrategy(individual):
 
 # select k individuals from population with Roulette Selection
 def RouletteSelection(population, k):
+    
     offspring = list()
     popProb = numpy.zeros(len(population))
     sumFitness = 0
     sumProb = 0
 
+    # sum fitness values of all individuals in population
     for ind in population:
         sumFitness += ind.fitness
 
+    # count the probabilities for selection of each individual in population
     for i in range(len(population)):
         tmp = population[i].fitness / sumFitness
         popProb[i] = sumProb + tmp   
         sumProb += tmp
     
+    # select k individuals from population
     for i in range(k):
         rand = random.random()
+        for j in range(len(population)):
+            if rand <= popProb[j]:
+                offspring.append(population[j])
+                break
+
+    return offspring
+
+# select k individual from population with Rank Selection
+def RankSelection(population, k):
+    
+    offspring = list()
+    popProb = numpy.zeros(len(population))
+    popFitness = numpy.zeros(len(population))
+    sumProb = 0
+
+    # copy the fitness values of all individuals in population
+    for i in range(len(population)):
+        popFitness[i] = population[i].fitness
+
+    # sort the array with fitness values
+    popFitness = numpy.sort(popFitness)
+
+    lowestProb = 1.0 / len(population)
+
+    # count the probabilities for selection of each individual in population
+    for i in range(len(population)):
+         for j in range(len(population)):
+             if population[i].fitness == popFitness[j]:
+                 popProb[i] =  sumProb + j + 1
+                 sumProb += (j + 1)
+                 break
+
+    # select k individuals from population
+    for i in range(k):
+        rand = random.randint(0, sumProb)
         for j in range(len(population)):
             if rand <= popProb[j]:
                 offspring.append(population[j])
