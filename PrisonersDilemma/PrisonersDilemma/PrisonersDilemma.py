@@ -73,8 +73,19 @@ def main():
         mutProb = float(spinboxMut.get())
         rounds = int(spinboxRounds.get())
         strategies = [alwaysCooperate.get(), alwaysDefect.get(), gradual.get(), grudger.get(), pavlov.get(), softMajo.get(), titForTat.get(), titFor2Tats.get()]
-        StartGeneration(popSize, generations, cxProb, mutProb, rounds, strategies)
         
+        scores = numpy.zeros(5)
+        for i in range(5):
+            scores[i] = StartGeneration(popSize, generations, cxProb, mutProb, rounds, strategies)
+        
+        file = open("results.txt", "w")
+        for f in scores:
+            file.write(str(f))
+            file.write("\n")
+
+        file.close()
+        print("Successfully saved results of 5 generations to file\n")
+
         return
 
     Button(window, text = "Start", font = "none, 10", bg = fontColor, activebackground = "gray48", fg = "white", width = 20, command = LaunchGA).grid(row = 15, column = 0, columnspan = 2, pady = 10)
@@ -118,8 +129,6 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     best = tools.selBest(population, 1)
     print("\nGeneration 0. Highest score:", numpy.average(best[0].scores), "Best fitness:", best[0].fitness, "\n")
         
-    RankSelection(population, 10)
-
     for i in range(gen):
         population = nextGeneration(population, popSize, cxProb, mutProb)
         best = tools.selBest(population, 1)
@@ -127,7 +136,7 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
 
     #decodeStrategy(best[0])
 
-    return
+    return numpy.average(best[0].scores)
 
 def nextGeneration(pop, popSize, cxProb, mutProb):
     offspring = toolbox.selectRank(pop, popSize)
@@ -137,7 +146,7 @@ def nextGeneration(pop, popSize, cxProb, mutProb):
     # crossover of the offspring
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
         if random.random() < cxProb:
-            toolbox.mateOnePoint(child1, child2)
+            toolbox.mateTwoPoints(child1, child2)
             del child1.fitness
             del child2.fitness
 
