@@ -122,7 +122,9 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     # register function mating two individuals with one point crossover
     toolbox.register("mateTwoPoints", tools.cxTwoPoint)
     # register function mutating individual with 5% probability of shuffling indexes
-    toolbox.register("mutate", tools.mutShuffleIndexes, indpb = 0.05)
+    toolbox.register("mutateShuffleIndexes", tools.mutShuffleIndexes, indpb = 0.05)
+    # register function mutating individual with 5% probability of flipping bit
+    toolbox.register("mutateFlipBit", tools.mutFlipBit, indpb = 0.05)
     
     population = toolbox.population(popSize)
     toolbox.evaluate(population)
@@ -153,7 +155,7 @@ def nextGeneration(pop, popSize, cxProb, mutProb):
     # mutation of the offspring
     for mutant in offspring:
         if random.random() < mutProb:
-            toolbox.mutate(mutant)
+            toolbox.mutateFlipBit(mutant)
 
     pop[:] = offspring
     toolbox.evaluate(pop)
