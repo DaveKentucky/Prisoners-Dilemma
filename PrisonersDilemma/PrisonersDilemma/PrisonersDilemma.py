@@ -78,10 +78,13 @@ def main():
         for i in range(5):
             scores[i] = StartGeneration(popSize, generations, cxProb, mutProb, rounds, strategies)
         
+        avg = numpy.average(scores)
         file = open("results.txt", "w")
         for f in scores:
             file.write(str(f))
             file.write("\n")
+
+        file.write("Average: " + str(avg))
 
         file.close()
         print("Successfully saved results of 5 generations to file\n")
@@ -110,7 +113,7 @@ def StartGeneration(popSize, gen, cxProb, mutProb, tournamentRounds, strategies)
     # register function creating new population
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
     # register function evaluating fitness
-    toolbox.register("evaluate", Fitness.evaluate, size = popSize, rounds = tournamentRounds, strChosen = strategies)
+    toolbox.register("evaluate", Fitness.evaluate, size = popSize, rounds = tournamentRounds, strategyChosen = strategies)
     # register function selecting individual from population with Tournament Selection
     toolbox.register("selectTournament", tools.selTournament, tournsize = 2)
     # register function selecting individual from population with Roulette Selection
@@ -148,14 +151,14 @@ def nextGeneration(pop, popSize, cxProb, mutProb):
     # crossover of the offspring
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
         if random.random() < cxProb:
-            toolbox.mateTwoPoints(child1, child2)
+            toolbox.mateOnePoint(child1, child2)
             del child1.fitness
             del child2.fitness
 
     # mutation of the offspring
     for mutant in offspring:
         if random.random() < mutProb:
-            toolbox.mutateFlipBit(mutant)
+            toolbox.mutateShuffleIndexes(mutant)
 
     pop[:] = offspring
     toolbox.evaluate(pop)

@@ -2,23 +2,23 @@ import numpy
 import Game
 
 # plays a game between given strategy and all predefined strategies
-def TestStrategy(ind, rounds, strChosen):
+def TestStrategy(ind, rounds, strategyChosen):
     
-    if strChosen[0] == 1:
+    if strategyChosen[0] == 1:
         AlwaysCooperate(ind, rounds)
-    if strChosen[1] == 1:    
+    if strategyChosen[1] == 1:    
         AlwaysDefect(ind, rounds)
-    if strChosen[2] == 1:    
+    if strategyChosen[2] == 1:    
         Gradual(ind, rounds)
-    if strChosen[3] == 1:    
+    if strategyChosen[3] == 1:    
         Grudger(ind, rounds)
-    if strChosen[4] == 1:    
+    if strategyChosen[4] == 1:    
         Pavlov(ind, rounds)
-    if strChosen[5] == 1:    
+    if strategyChosen[5] == 1:    
         SoftMajo(ind, rounds)
-    if strChosen[6] == 1:    
+    if strategyChosen[6] == 1:    
         TitForTat(ind, rounds)
-    if strChosen[7] == 1:    
+    if strategyChosen[7] == 1:    
         TitFor2Tats(ind, rounds)
     
     # print(ind.scores)
